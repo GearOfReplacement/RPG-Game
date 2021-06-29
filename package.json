@@ -8,7 +8,7 @@
     "pret": "npx prettier --write .",
     "prepare": "husky install",
     "build:dev": "env NODE_ENV=development webpack",
-    "build:prod": "env NODE_ENV=production webpack"
+    "build": "env NODE_ENV=production webpack"
   },
   "repository": {
     "type": "git",
