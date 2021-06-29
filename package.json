@@ -6,8 +6,8 @@
     "lint": "npx eslint src/**/*.js",
     "pret": "npx prettier --write .",
     "prepare": "husky install",
-    "build:prod": "env NODE_ENV=production webpack",
-    "build:dev": "env NODE_ENV=development webpack"
+    "build:dev": "env NODE_ENV=development webpack",
+    "build:prod": "env NODE_ENV=production webpack"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.6",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
