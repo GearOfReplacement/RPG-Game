@@ -11,5 +11,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    "object-curly-newline": ["error", { "multiline": true, "minProperties": 10 }],
   },
 };
