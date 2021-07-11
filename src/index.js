@@ -1,130 +1,93 @@
 import './index.scss';
-import Cloud from './assets/sprite_cloud.png';
-import Grass from './assets/grass.png';
+import ClientGame from './client/ClientGame';
 
-const canvas = document.querySelector('#game');
-const context = canvas.getContext('2d');
+// import worldCfg from './configs/world.json';
+// import sprites from './configs/sprites';
 
-const spriteW = 48;
-const spriteH = 50;
-const shots = 3;
-let cycle = 0;
-let bottomPressed = false;
-let bottomType = 'stand';
-let characterDirection = 0;
-let pY = 270;
-let pX = 270;
+// import Cloud from './assets/sprite_cloud.png';
+// import terrainAtlas from './assets/terrain.png';
 
-const grass = document.createElement('img');
-const img = document.createElement('img');
+// const canvas = document.querySelector('#game');
+// const context = canvas.getContext('2d');
 
-grass.src = Grass;
-img.src = Cloud;
+// const spriteW = 48;
+// const spriteH = 48;
+// const maxAreaW = canvas.clientHeight - spriteW;
+// const maxAreaH = canvas.clientWidth - spriteH;
 
-function keyDownHandler(e) {
-  if (e.key === 'ArrowDown' || e.key === 'down') {
-    bottomPressed = true;
-    bottomType = 'down';
-  }
-  if (e.key === 'ArrowLeft' || e.key === 'left') {
-    bottomPressed = true;
-    bottomType = 'left';
-  }
-  if (e.key === 'ArrowRight' || e.key === 'right') {
-    bottomPressed = true;
-    bottomType = 'right';
-  }
-  if (e.key === 'ArrowUp' || e.key === 'up') {
-    bottomPressed = true;
-    bottomType = 'up';
-  }
-}
+// const shots = 3;
+// let cycle = 1;
 
-function keyUpHandler(e) {
-  if (e.key === 'ArrowDown' || e.key === 'down') bottomPressed = false;
-  if (e.key === 'ArrowLeft' || e.key === 'left') bottomPressed = false;
-  if (e.key === 'ArrowRight' || e.key === 'right') bottomPressed = false;
-  if (e.key === 'ArrowUp' || e.key === 'up') bottomPressed = false;
-}
+// let bottomPressed = null;
+// let characterDirection = 0;
 
-function drawTriangle(x, y) {
-  context.fillStyle = 'gray';
-  context.strokeStyle = 'gray';
+// let pY = maxAreaH / 2;
+// let pX = maxAreaW / 2;
 
-  context.beginPath();
-  context.moveTo(x, y);
-  context.lineTo(x + 15, y);
-  context.lineTo(x + 7.5, y - 25);
-  context.lineTo(x, y);
-  context.fill();
-}
+// const img = document.createElement('img');
+// const terrain = document.createElement('img');
 
-function drawBackground() {
-  context.fillStyle = 'limegreen';
-  context.fillRect(0, 0, 600, 600);
-  context.stroke();
+// terrain.src = terrainAtlas;
+// img.src = Cloud;
 
-  for (let i = 0; i < 200; i += 40) {
-    for (let j = 0; j < 300; j += 50) {
-      context.drawImage(grass, j, i, 50, 50);
-    }
-  }
+// function keyDownHandler(e) {
+//   if (e.key === 'ArrowDown' || e.key === 'down')    bottomPressed = 'down';
+//   if (e.key === 'ArrowLeft' || e.key === 'left')    bottomPressed = 'left';
+//   if (e.key === 'ArrowRight' || e.key === 'right')  bottomPressed = 'right';
+//   if (e.key === 'ArrowUp' || e.key === 'up')        bottomPressed = 'up';
+// }
 
-  for (let i = 0; i < 200; i += 40) {
-    for (let j = 400; j < 600; j += 50) {
-      context.drawImage(grass, j, i, 50, 50);
-    }
-  }
+// function keyUpHandler(e) {
+//   if (e.key === 'ArrowDown' || e.key === 'down')    bottomPressed = null;
+//   if (e.key === 'ArrowLeft' || e.key === 'left')    bottomPressed = null;
+//   if (e.key === 'ArrowRight' || e.key === 'right')  bottomPressed = null;
+//   if (e.key === 'ArrowUp' || e.key === 'up')        bottomPressed = null;
+// }
 
-  for (let i = 400; i < 600; i += 40) {
-    for (let j = 0; j < 300; j += 50) {
-      context.drawImage(grass, j, i, 50, 50);
-    }
-  }
+// function walk(tamestamp) {
+//   if (bottomPressed) {
+//     if (bottomPressed === 'down') {
+//       characterDirection = img.height * 0;
+//       if (pY + 10 < maxAreaH) pY += 10;
+//     }
+//     if (bottomPressed === 'left') {
+//       characterDirection = img.height * 0.25;
+//       if (pX - 10 >= 0) pX -= 10;
+//     }
+//     if (bottomPressed === 'right') {
+//       characterDirection = img.height * 0.50;
+//       if (pX + 10 < maxAreaW) pX += 10;
+//     }
+//     if (bottomPressed === 'up') {
+//       characterDirection = img.height * 0.75;
+//       if (pY - 10 >= 0) pY -= 10;
+//     }
+//     context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+//     cycle = (cycle + 1) % shots;
+//   }
 
-  for (let i = 400; i < 600; i += 40) {
-    for (let j = 400; j < 600; j += 50) {
-      context.drawImage(grass, j, i, 50, 50);
-    }
-  }
+// context.
+// drawImage(img, cycle * spriteW, characterDirection, spriteW, spriteH, pX, pY, spriteW, spriteH);
+//   window.requestAnimationFrame(walk);
+// }
 
-  context.fillStyle = 'black';
-  context.fillRect(0, 250, 600, 150);
-  context.fillRect(300, 0, 100, 600);
+// document.addEventListener('keydown', keyDownHandler);
+// document.addEventListener('keyup', keyUpHandler);
 
-  for (let i = 0, j = 250; i < 300; i += 15) drawTriangle(i, j);
-  for (let i = 400, j = 250; i < 600; i += 15) drawTriangle(i, j);
-  for (let i = 0, j = 400; i < 300; i += 15) drawTriangle(i, j);
-  for (let i = 400, j = 400; i < 600; i += 15) drawTriangle(i, j);
-}
+// img.addEventListener('load', () => {
 
-document.addEventListener('keydown', keyDownHandler);
-document.addEventListener('keyup', keyUpHandler);
+//   let {map} = worldCfg;
 
-img.addEventListener('load', () => {
-  setInterval(() => {
-    if (bottomPressed) {
-      if (bottomType === 'down') {
-        characterDirection = 0;
-        if (pY + 10 < 560) pY += 10;
-      }
-      if (bottomType === 'left') {
-        characterDirection = 50;
-        if (pX - 10 >= 0) pX -= 10;
-      }
-      if (bottomType === 'right') {
-        characterDirection = 100;
-        if (pX + 10 < 570) pX += 10;
-      }
-      if (bottomType === 'up') {
-        characterDirection = 150;
-        if (pY - 10 >= 0) pY -= 10;
-      }
-      context.clearRect(0, 0, 600, 600);
-      cycle = (cycle + 1) % shots;
-    }
+//   map.forEach((cfgRow, y) => {
+//     cfgRow.forEach((cfgSell, x)=> {
+//       const [sX, sY, sW, sH] = sprites.terrain[cfgSell[0]].frames[0];
+//       context.drawImage(terrain, sX, sY, sW, sH, x * spriteW, y * spriteH, spriteW, spriteH);
+//     })
+//   });
 
-    drawBackground();
-    context.drawImage(img, cycle * spriteW, characterDirection, spriteW, spriteH, pX, pY, 48, 48);
-  }, 120);
+//   window.requestAnimationFrame(walk);
+// });
+
+window.addEventListener('load', () => {
+  ClientGame.init({ tagId: 'game' });
 });
