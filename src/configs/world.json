@@ -60,7 +60,7 @@
             [["grass"]],
             [["grass"]],
             [["grass"]],
-            [["grass"]],
+            [["grass", { "type": "boy3", "player": true}]],
             [["grass"]],
             [["grass"]],
             [["grass"]],
