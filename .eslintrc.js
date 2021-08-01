@@ -20,5 +20,10 @@ module.exports = {
     "no-plusplus": 0,
     "no-param-reassign": 0,
     "function-paren-newline": 0,
+    "import/no-cycle": 0,
+    "prefer-destructuring": 0,
+    "prefer-object-spread": 0,
+    "prefer-template": 0,
+
   },
 };
