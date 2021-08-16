@@ -19,7 +19,12 @@ class ClientGame {
   }
 
   setPlayer(player) {
+    player.playerName = this.cfg.name;
     this.player = player;
+  }
+
+  getWorld() {
+    return this.map;
   }
 
   createWorld() {
@@ -27,31 +32,35 @@ class ClientGame {
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId));
+    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
+  }
+
+  movePlayerTo(arrow) {
+    const dir = {
+      left: [-1, 0],
+      right: [1, 0],
+      up: [0, -1],
+      down: [0, 1],
+    };
+
+    const { player } = this;
+
+    if (player && player.motionProgress === 1) {
+      const canMovie = player.moveByCellCoord(...dir[arrow], (cell) => cell.findObjectsByType('grass').length);
+
+      if (canMovie) {
+        player.setState(arrow);
+        player.once('motion-stopped', () => player.setState('main'));
+      }
+    }
   }
 
   initKeys() {
     this.engine.input.onKey({
-      ArrowLeft: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(-1, 0, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-      ArrowRight: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(1, 0, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-      ArrowDown: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(0, 1, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-      ArrowUp: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(0, -1, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
+      ArrowLeft: (keydown) => keydown && this.movePlayerTo('left'),
+      ArrowUp: (keydown) => keydown && this.movePlayerTo('up'),
+      ArrowRight: (keydown) => keydown && this.movePlayerTo('right'),
+      ArrowDown: (keydown) => keydown && this.movePlayerTo('down'),
     });
   }
 
@@ -59,6 +68,7 @@ class ClientGame {
     this.engine.loadSprites(sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
+        this.engine.camera.focusAtGameObject(this.player);
         this.map.render(time);
       });
       this.engine.start();
