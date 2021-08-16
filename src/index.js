@@ -22,7 +22,6 @@ window.addEventListener('load', () => {
       ClientGame.init({
         tagId: 'game',
         playerName: $inputName.value,
-
       });
 
       socket.emit('start', $inputName.value);
@@ -40,9 +39,7 @@ window.addEventListener('load', () => {
     e.preventDefault();
 
     if ($input.value) {
-      console.log('####: $input', $input.value);
       socket.emit('chat message', $input.value);
-
       $input.value = '';
     }
   });
@@ -56,7 +53,6 @@ window.addEventListener('load', () => {
   });
 
   socket.on('chat message', (data) => {
-    console.log('####: data', data);
     $message.insertAdjacentHTML('beforeend', `<p><strong>${getTime(data.time)}</strong> - ${data.msg}</p>`);
   });
 });
