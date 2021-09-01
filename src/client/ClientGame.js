@@ -19,7 +19,6 @@ class ClientGame {
   }
 
   setPlayer(player) {
-    player.playerName = this.cfg.name;
     this.player = player;
   }
 

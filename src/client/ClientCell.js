@@ -43,6 +43,7 @@ class ClientCell extends PositionedObject {
           cell: this,
           objCfg,
           layerId,
+          playerName: this.world.game.cfg?.playerName,
         });
       }),
     );
