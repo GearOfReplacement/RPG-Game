@@ -24,6 +24,9 @@ module.exports = {
     "prefer-destructuring": 0,
     "prefer-object-spread": 0,
     "prefer-template": 0,
-
+    "object-curly-newline": 0,
+    "class-methods-use-this": 0,
+    "no-unused-expressions": 0,
+    "no-console": 0,
   },
 };

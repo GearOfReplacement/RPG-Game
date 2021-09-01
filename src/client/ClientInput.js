@@ -14,16 +14,16 @@ class ClientInput {
 
   onKeyDown(e) {
     this.keysPressed.add(e.code);
-    // this.keyHandlers[e.code] &&
-    this.keyHandlers[e.code](true);
+    this.keyHandlers[e.code] && this.keyHandlers[e.code](true);
     this.trigger('keydown', e);
+    window.document.body.style.overflow = 'hidden';
   }
 
   onKeyUp(e) {
     this.keysPressed.delete(e.code);
-    // this.keyHandlers[e.code] &&
-    this.keyHandlers[e.code](false);
+    this.keyHandlers[e.code] && this.keyHandlers[e.code](false);
     this.trigger('keyup', e);
+    window.document.body.style.overflow = 'auto';
   }
 
   onKey({ ...handlers }) {

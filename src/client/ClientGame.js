@@ -4,15 +4,23 @@ import gameObjects from '../configs/gameObjects.json';
 
 import levelCfg from '../configs/world.json';
 import sprites from '../configs/sprites';
+import ClientApi from './ClientApi';
 
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg,
-      gameObjects,
+      gameObjects: cfg.gameObjects,
       player: null,
+      players: {},
+      api: new ClientApi({
+        game: this,
+        ...cfg.apiCfg,
+      }),
+      spawnPoint: [],
     });
 
+    this.api.connect();
     this.engine = this.createEngine();
     this.map = this.createWorld();
     this.initEngine();
@@ -27,7 +35,7 @@ class ClientGame {
   }
 
   createWorld() {
-    return new ClientWorld(this, this.engine, levelCfg);
+    return new ClientWorld(this, this.engine, this.cfg.world);
   }
 
   createEngine() {
@@ -35,6 +43,7 @@ class ClientGame {
   }
 
   movePlayerTo(arrow) {
+    this.api.move(arrow);
     const dir = {
       left: [-1, 0],
       right: [1, 0],
@@ -64,15 +73,63 @@ class ClientGame {
   }
 
   initEngine() {
-    this.engine.loadSprites(sprites).then(() => {
+    this.engine.loadSprites(this.cfg.sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
-        this.engine.camera.focusAtGameObject(this.player);
+        this.player && this.engine.camera.focusAtGameObject(this.player);
         this.map.render(time);
       });
       this.engine.start();
       this.initKeys();
+      this.engine.focus();
+      this.api.join(this.cfg.playerName);
     });
+  }
+
+  createPlayer({ id, col, row, layer, skin, name }) {
+    if (!this.players[id]) {
+      const cell = this.map.cellAt(col, row);
+      const playerObj = cell.createGameObject(
+        {
+          class: 'player',
+          type: skin,
+          playerId: id,
+          playerName: name,
+        },
+        layer,
+      );
+
+      cell.addGameObject(playerObj);
+      this.players[id] = playerObj;
+    }
+
+    return this.players[id];
+  }
+
+  createCurrentPlayer(playerCfg) {
+    const playerObj = this.createPlayer(playerCfg);
+    this.setPlayer(playerObj);
+  }
+
+  setPlayers(playersList) {
+    playersList.forEach((player) => this.createPlayer(player));
+  }
+
+  addSpawnPoint(spawnPoint) {
+    this.spawnPoint.push(spawnPoint);
+  }
+
+  getPlayerById(id) {
+    return this.players[id];
+  }
+
+  removePlayerById(id) {
+    const player = this.getPlayerById(id);
+
+    if (player) {
+      player.detouch();
+      delete this.players[id];
+    }
   }
 
   static init(cfg) {
